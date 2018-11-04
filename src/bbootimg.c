@@ -19,14 +19,12 @@ static const char *default_fname_blobs[] = {
     "zImage",     // LIBBOOTIMG_BLOB_KERNEL
     "initrd.img", // LIBBOOTIMG_BLOB_RAMDISK
     "stage2.img", // LIBBOOTIMG_BLOB_SECOND
-    "dtb.img",    // LIBBOOTIMG_BLOB_DTB
 };
 
 static const char *blob_names[] = {
     "kernel",       // LIBBOOTIMG_BLOB_KERNEL
     "ramdisk",      // LIBBOOTIMG_BLOB_RAMDISK
     "second stage", // LIBBOOTIMG_BLOB_SECOND
-    "DTB",          // LIBBOOTIMG_BLOB_DTB
 };
 
 struct bbootimg_info
@@ -305,8 +303,6 @@ static int print_info(const char *path)
     printf ("  ramdisk size      = %u bytes (%.2f MB)\n", img.hdr.ramdisk_size, (double)img.hdr.ramdisk_size/0x100000);
     if (img.hdr.second_size)
         printf ("  second stage size = %u bytes (%.2f MB)\n", img.hdr.second_size, (double)img.hdr.second_size/0x100000);
-    if (img.hdr.dt_size)
-        printf ("  device tree size  = %u bytes (%.2f MB)\n", img.hdr.dt_size, (double)img.hdr.dt_size/0x100000);
 
     printf ("\n* load addresses:\n");
     printf ("  kernel:       0x%08x\n", img.hdr.kernel_addr);
@@ -365,7 +361,6 @@ static int print_json(const char *path)
     printf("        \"page_size\": %u,\n", img.hdr.page_size);
     printf("        \"name\": \"%s\",\n", name);
     printf("        \"cmdline\": \"%s\",\n", img.hdr.cmdline);
-    printf("        \"dt_size\": %u,\n", img.hdr.dt_size);
     printf("        \"id\": [\n");
     for(i = 0; i < 8; ++i)
         printf("            %u%c\n", img.hdr.id[i], (i != 7) ? ',' : ' ');
@@ -629,8 +624,6 @@ int main(int argc, const char *argv[])
             info.fname_blobs[LIBBOOTIMG_BLOB_RAMDISK] = argv[++i];
         else if(strcmp("-s", argv[i]) == 0)
             info.fname_blobs[LIBBOOTIMG_BLOB_SECOND] = argv[++i];
-        else if(strcmp("-d", argv[i]) == 0)
-            info.fname_blobs[LIBBOOTIMG_BLOB_DTB] = argv[++i];
         else
         {
             fprintf(stderr, "Unknown argument: %s\n\n", argv[i]);
