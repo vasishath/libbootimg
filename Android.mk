@@ -49,6 +49,7 @@ include $(CLEAR_VARS)
 
 LOCAL_SRC_FILES := src/libbootimg.c
 LOCAL_MODULE := libbootimg
+LOCAL_WHOLE_STATIC_LIBRARIES := libcutils
 LOCAL_MODULE_TAGS := eng
 
 LOCAL_CFLAGS := -DDEBUG_KMSG
