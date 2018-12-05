@@ -11,6 +11,7 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <cutils/klog.h>
 #include "boot_img_hdr.h"
 
@@ -362,8 +363,8 @@ const char *libbootimg_version_str(void);
 const char *libbootimg_error_str(int error);
 
 
-char* libbootimg_get_oslevel (struct boot_img_hdr *header);
-char* libbootimg_get_osversion (struct boot_img_hdr *header);
+char* libbootimg_get_oslevel (struct boot_img_hdr *header, bool raw);
+char* libbootimg_get_osversion (struct boot_img_hdr *header, bool raw);
 
 /**
  * Prints the content of the boot image information to the stdout or

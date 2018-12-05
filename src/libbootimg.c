@@ -1275,7 +1275,7 @@ const char *libbootimg_error_str(int error)
     }
 }
 
-char* libbootimg_get_oslevel (struct boot_img_hdr *header) {
+char* libbootimg_get_oslevel (struct boot_img_hdr *header, bool raw) {
     int y, m;
     y = m = 0;
     char* oslevel = malloc(20);
@@ -1288,13 +1288,17 @@ char* libbootimg_get_oslevel (struct boot_img_hdr *header) {
         m = os_patch_level&0xf;
 
         if((y >= 2000) && (y < 2128) && (m > 0) && (m <= 12)) {
-            sprintf(oslevel, "%d-%02d-01", y, m);
+            if (raw) {
+                sprintf(oslevel, "%d%02d", y, m);
+            } else {
+                sprintf(oslevel, "%d-%02d-01", y, m);
+            }
         }
     }
     return oslevel;
 }
 
-char* libbootimg_get_osversion (struct boot_img_hdr *header) {
+char* libbootimg_get_osversion (struct boot_img_hdr *header, bool raw) {
     int a, b, c;
     a = b = c = 0;
     char* osversion = malloc(20);
@@ -1308,7 +1312,11 @@ char* libbootimg_get_osversion (struct boot_img_hdr *header) {
         c = os_version&0x7f;
 
         if((a < 128) && (b < 128) && (c < 128)) {
-            sprintf(osversion, "%d.%d.%d", a, b, c);
+            if (raw) {
+                sprintf(osversion, "%d%d%d", a, b, c);
+            } else {
+                sprintf(osversion, "%d.%d.%d", a, b, c);
+            }
         }
     }
     return osversion;
