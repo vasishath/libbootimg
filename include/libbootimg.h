@@ -365,6 +365,8 @@ const char *libbootimg_error_str(int error);
 
 char* libbootimg_get_oslevel (struct boot_img_hdr *header, bool raw);
 char* libbootimg_get_osversion (struct boot_img_hdr *header, bool raw);
+char* libbootimg_get_cmdline (struct boot_img_hdr *header);
+void libbootimg_set_cmdline (struct boot_img_hdr *header, char* cmdline);
 
 /**
  * Prints the content of the boot image information to the stdout or
