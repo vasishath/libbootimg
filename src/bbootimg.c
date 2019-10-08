@@ -102,10 +102,11 @@ static int write_config(struct bbootimg_info *i, const char *dst)
         "ramdiskaddr = 0x%X\n"
         "secondaddr = 0x%X\n"
         "tagsaddr = 0x%X\n"
+        "oslevel = 0x%X\n"
         "name = %s\n"
         "cmdline = %s\n",
         (uint32_t)i->img_size, i->img.hdr.page_size, i->img.hdr.kernel_addr, i->img.hdr.ramdisk_addr,
-        i->img.hdr.second_addr, i->img.hdr.tags_addr, i->img.hdr.name, libbootimg_get_cmdline(&i->img.hdr));
+        i->img.hdr.second_addr, i->img.hdr.tags_addr, i->img.hdr.oslevel, i->img.hdr.name, i->img.hdr.cmdline);
 
     fclose(f);
     return res;
@@ -162,6 +163,8 @@ static int load_config_line(struct bbootimg_info *i, const char *line)
         i->img.hdr.second_addr = strtoll(arg_s, NULL, 0);
     else if(strncmp("tagsaddr", start, n_to_cmp) == 0)
         i->img.hdr.tags_addr = strtoll(arg_s, NULL, 0);
+    else if(strncmp("oslevel", start, n_to_cmp) == 0)
+        i->img.hdr.oslevel = strtoll(arg_s, NULL, 0);
     else if(strncmp("name", start, n_to_cmp) == 0)
         parse_config_str((char*)i->img.hdr.name, arg_s, end, BOOT_NAME_SIZE);
     else if(strncmp("cmdline", start, n_to_cmp) == 0)
