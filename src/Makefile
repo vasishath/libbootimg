@@ -1,6 +1,6 @@
 program=bbootimg
 CC?=gcc
-OPT=-O2 ${CFLAGS}
+OPT=-O2 -Wno-address-of-packed-member ${CFLAGS}
 OBJ=bbootimg.o libbootimg.o
 
 .PHONY: build

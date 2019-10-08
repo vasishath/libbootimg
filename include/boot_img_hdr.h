@@ -53,6 +53,7 @@
 #define BOOT_MAGIC_SIZE 8
 #define BOOT_NAME_SIZE 16
 #define BOOT_ARGS_SIZE 512
+#define BOOT_EXTRA_ARGS_SIZE 1024
 
 #define BOOT_MAGIC_ELF "ELF"
 #define BOOT_MAGIC_ELF_SIZE 3
@@ -94,7 +95,8 @@ struct boot_img_hdr
     uint8_t cmdline[BOOT_ARGS_SIZE];
 
     uint32_t id[8]; /* timestamp / checksum / sha1 / etc */
-};
+    uint8_t extra_cmdline[BOOT_EXTRA_ARGS_SIZE];
+}__attribute__((packed));
 
 struct boot_img_elf_hdr_32
 {

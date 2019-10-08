@@ -105,7 +105,7 @@ static int write_config(struct bbootimg_info *i, const char *dst)
         "name = %s\n"
         "cmdline = %s\n",
         (uint32_t)i->img_size, i->img.hdr.page_size, i->img.hdr.kernel_addr, i->img.hdr.ramdisk_addr,
-        i->img.hdr.second_addr, i->img.hdr.tags_addr, i->img.hdr.name, i->img.hdr.cmdline);
+        i->img.hdr.second_addr, i->img.hdr.tags_addr, i->img.hdr.name, libbootimg_get_cmdline(&i->img.hdr));
 
     fclose(f);
     return res;
@@ -360,7 +360,7 @@ static int print_json(const char *path)
     printf("        \"tags_addr\": %u,\n", img.hdr.tags_addr);
     printf("        \"page_size\": %u,\n", img.hdr.page_size);
     printf("        \"name\": \"%s\",\n", name);
-    printf("        \"cmdline\": \"%s\",\n", img.hdr.cmdline);
+    printf("        \"cmdline\": \"%s\",\n", libbootimg_get_cmdline(&img));
     printf("        \"id\": [\n");
     for(i = 0; i < 8; ++i)
         printf("            %u%c\n", img.hdr.id[i], (i != 7) ? ',' : ' ');

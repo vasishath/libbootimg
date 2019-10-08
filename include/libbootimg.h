@@ -12,7 +12,9 @@ extern "C" {
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#ifdef DEBUG_KMSG
 #include <cutils/klog.h>
+#endif
 #include "boot_img_hdr.h"
 
 #define LIBBOOTIMG_VERSION 0x000203 // 0xMMNNPP

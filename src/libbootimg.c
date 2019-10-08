@@ -994,7 +994,6 @@ int libbootimg_write_img_fileptr(struct bootimg *b, FILE *f)
         return LIBBOOTIMG_ERROR_INVALID_PAGESIZE;
 
     // make sure it ends with 0
-    b->hdr.cmdline[BOOT_ARGS_SIZE-1] = 0;
 
     // set unused field to 0 - we might not be handling something
     // which gets turned-on by this field, like with dtb
@@ -1323,11 +1322,26 @@ char* libbootimg_get_osversion (struct boot_img_hdr *header, bool raw) {
 }
 
 char* libbootimg_get_cmdline (struct boot_img_hdr *header) {
-    return header->cmdline;
+     char* cmdlinetmp = NULL;
+    asprintf(&cmdlinetmp, "%.*s%.*s", BOOT_ARGS_SIZE, header->cmdline, BOOT_EXTRA_ARGS_SIZE, header->extra_cmdline);
+    cmdlinetmp[BOOT_ARGS_SIZE+BOOT_EXTRA_ARGS_SIZE]='\0';
+
+    return cmdlinetmp;
 }
 
 void libbootimg_set_cmdline (struct boot_img_hdr *header, char* cmdline) {
-    memcpy(header->cmdline, cmdline, strlen(cmdline));
+
+    size_t cmdlen = strlen(cmdline);
+    if(cmdlen <= BOOT_ARGS_SIZE) {
+        strcpy((char *)header->cmdline, cmdline);
+    } else if(cmdlen <= BOOT_ARGS_SIZE + BOOT_EXTRA_ARGS_SIZE) {
+        /* exceeds the limits of the base command-line size, go for the extra */
+        memcpy(header->cmdline, cmdline, BOOT_ARGS_SIZE);
+        strcpy((char *)header->extra_cmdline, cmdline+BOOT_ARGS_SIZE);
+    } else {
+        fprintf(stderr,"error: kernel commandline too large\n");
+        return;
+    }
 }
 
 void print_hdr_to_log(struct boot_img_hdr* hdr)
